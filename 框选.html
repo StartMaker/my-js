@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <style type="text/css">
+        #container{
+            width: 600px;
+            height: 600px;
+            background-color: #41d196;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+        #container>div{
+            width: 25px;
+            height: 25px;
+            margin: 15px;
+            outline: 1px solid #e45d37;
+            display: inline-block;
+        }
+        #container>span{
+            display: block;
+            background-color: transparent;
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            top: 0;
+        }
+        #container>span>div{
+            position: absolute;
+            outline: 1px darkcyan dashed;
+        }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+<script type="text/javascript">
+    let dom = document.querySelector('#container');
+    for(let i = 0; i <= 72; i++){
+        let div = document.createElement('div');
+        dom.appendChild(div);
+    }
+    dom.onmousedown = function (event) {
+        event.stopPropagation();
+        let span = document.createElement("span");
+        let div = document.createElement("div");
+        span.appendChild(div);
+        let startX = event.offsetX;
+        let startY = event.offsetY;
+        console.log(span.style);
+        dom.appendChild(span);
+        dom.onmousemove = function (event) {
+            event.stopPropagation();
+            if(event.offsetX - startX >= 0 && event.offsetY - startY >= 0){
+                div.style.cssText = 'top:' + startY + 'px;left:' + startX + 'px;width:' + (event.offsetX - startX) + 'px;height:' + (event.offsetY - startY) + 'px';
+            }
+            else if(event.offsetX - startX >= 0 && event.offsetY - startY <= 0){
+                div.style.cssText = 'top:' + event.offsetY + 'px;left:' + startX + 'px;width:' + (event.offsetX - startX) + 'px;height:' + (startY - event.offsetY) + 'px';
+            }
+            else if(event.offsetX - startX <= 0 && event.offsetY - startY >= 0){
+                div.style.cssText = 'top:' + startY + 'px;left:' + event.offsetX + 'px;width:' + (startX - event.offsetX) + 'px;height:' + (event.offsetY - startY) + 'px';
+            }
+            else if(event.offsetX - startX <= 0 && event.offsetY - startY <= 0){
+                div.style.cssText = 'top:' + event.offsetY + 'px;left:' + event.offsetX + 'px;width:' + (startX - event.offsetX) + 'px;height:' + (startY - event.offsetY) + 'px';
+            }
+        };
+        dom.onmouseup = function (event) {
+            event.stopPropagation();
+            let endX = event.offsetX;
+            let endY = event.offsetY;
+            dom.onmousemove = null;
+            dom.onmouseup = null;
+        }
+    }
+
+</script>
+</body>
+</html>
