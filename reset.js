@@ -36,7 +36,7 @@ function myReady(fn){
 }
 function $(node) {
     let nodeGet = document.querySelectorAll(node);
-    if(nodeGet.length==1){
+    if(nodeGet.length === 1){
         return nodeGet[0];
     }
     else {
