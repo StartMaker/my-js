@@ -14,7 +14,10 @@ export const EventUtil = (function () {
         addHandler: function(element, type, handler){
             // DOM 2 级事件处理程序
             if (element.addEventListener){
-                element.addEventListener(type, handler, false);
+                this.addHandler = function (element, type, handler){
+                    element.addEventListener(type, handler, false);
+                };
+                this.addHandler(element, type, handler);
             }
             // IE事件处理程序
             else if (element.attachEvent){
@@ -27,7 +30,10 @@ export const EventUtil = (function () {
             }
             // DOM 0 级事件处理程序
             else{
-                element["on" + type] = handler;
+                this.addHandler = function(element, type, handler){
+                    element["on" + type] = handler;
+                };
+                this.addHandler(element, type, handler);
             }
         },
         // 取消事件的默认行为
